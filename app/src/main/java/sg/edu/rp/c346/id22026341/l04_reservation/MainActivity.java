@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
     TextView nameView;
     EditText nameEdit;
@@ -44,14 +46,37 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 int CheckRadioId =pickArea.getCheckedRadioButtonId();
+                int day = dp.getDayOfMonth();
+                int month = dp.getMonth();
+                int year = dp.getYear();
+                int hour = tp.getCurrentHour();
+                int minute = tp.getCurrentMinute();
                 if(CheckRadioId == R.id.radioButtonSmoke)
                 {
-                    Toast.makeText(MainActivity.this, "Name: " + nameEdit, Toast.LENGTH_SHORT).show();
+                    String message = "Name: " + nameEdit.getText() + "\nMobile: " + mobileEdit.getText() + "\nDate: " + day + "/" + month + "/" + year + "\nTime: " + hour + ":" + minute + "\n" + "Smoking area";
+                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this, "Name: " + nameEdit, Toast.LENGTH_SHORT).show();
+                    String message = "Name: " + nameEdit.getText() + "\nMobile: " + mobileEdit.getText() + "\nDate: " + day + "/" + month + "/" + year + "\nTime: " + hour + ":" + minute + "\n" + "Non-Smoking area";
+                    Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nameEdit.setText("");
+                mobileEdit.setText("");
+                sizeEdit.setText("");
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                tp.setCurrentHour(0);
+                tp.setCurrentMinute(0);
+                dp.updateDate(year, month, day);
+                pickArea.clearCheck();
             }
         });
     }
